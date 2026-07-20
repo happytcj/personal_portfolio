@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prints &mdash; TJ Jiang</title>
+    <link rel="stylesheet" href="style.css?v=2.0">
+    <!-- PayPal SDK with Venmo enabled -->
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD&enable-funding=venmo"></script>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="site-header">
+        <h1 class="site-title"><a href="index.html">TJ Jiang</a></h1>
+        <nav class="site-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="series.html">Series</a></li>
+                <li><a href="prints.html" class="active">Prints</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content (Store / Prints Page) -->
+    <main class="gallery-container">
+        
+        <!-- Grid View (2 Rows of Photo Print Items) -->
+        <section id="prints-grid-view" class="prints-grid-container">
+            <div id="prints-grid" class="prints-grid">
+                <!-- Dynamically generated 3x2 grid items (2 rows) -->
+            </div>
+        </section>
+
+        <!-- Product Detail View -->
+        <section id="product-detail-view" class="product-detail-container" style="display: none;">
+            <!-- Back Button -->
+            <div class="back-nav">
+                <a href="#" class="back-link">&larr; Back to Prints</a>
+            </div>
+            
+            <div class="product-detail-layout">
+                <!-- Left Column: Large photo preview -->
+                <div class="product-detail-image-col">
+                    <div class="product-detail-image-wrapper">
+                        <img id="detail-image" src="" alt="Print Preview">
+                    </div>
+                </div>
+                
+                <!-- Right Column: Print details & checkout -->
+                <div class="product-detail-info-col">
+                    <h2 id="detail-title" class="product-detail-title"></h2>
+                    <div id="detail-price" class="product-detail-price"></div>
+                    
+                    <!-- Size Selector Dropdown -->
+                    <div class="selector-container">
+                        <label for="detail-size-select" class="selector-label">Select Size</label>
+                        <select id="detail-size-select" class="selector-dropdown">
+                            <option value="8x10">8x10 inches &mdash; $25.00</option>
+                            <option value="11x14">11x14 inches &mdash; $45.00</option>
+                            <option value="16x20">16x20 inches &mdash; $75.00</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Client-Side PayPal/Venmo Smart Buttons Container -->
+                    <div class="paypal-checkout-container">
+                        <div id="paypal-button-container"></div>
+                    </div>
+                    
+                    <!-- Fine Print and Details Section -->
+                    <div class="product-metadata">
+                        <div class="metadata-section">
+                            <h4>Print Details</h4>
+                            <p id="detail-description"></p>
+                            <ul>
+                                <li><strong>Paper:</strong> Premium archival luster photographic paper (260 gsm)</li>
+                                <li><strong>Ink:</strong> Professional-grade archival pigment inks with wide color gamut</li>
+                                <li><strong>Finish:</strong> Elegant semi-matte finish, reducing glare while maintaining deep black levels</li>
+                                <li><strong>Border:</strong> Includes a small white border for easy matting and framing</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="metadata-section">
+                            <h4>Shipping & Handling</h4>
+                            <p>Each print is custom-produced to order. Please allow 2-4 business days for printing and packaging. Ships globally in a durable heavy-duty tube or protective flat-pack to ensure perfect condition upon arrival.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <p>&copy; 2026 TJ Jiang</p>
+    </footer>
+
+    <!-- Store & Router Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Product Database (6 items to form a 3x2 grid of 2 rows)
+            const products = [
+                {
+                    id: "shore",
+                    title: "SHORE",
+                    image: "images/prints/shore.jpeg",
+                    description: "An atmospheric, wide perspective of horse riders walking along a serene, expansive coastline as gentle ocean waves wash onto the sandy shore.",
+                    prices: {
+                        "8x10": "25.00",
+                        "11x14": "45.00",
+                        "16x20": "75.00"
+                    }
+                },
+                {
+                    id: "kimono",
+                    title: "KIMONO",
+                    image: "images/prints/kimono.jpeg",
+                    description: "An elegant capture of two women dressed in traditional yukatas standing on a stone arch bridge in a serene Japanese garden pond.",
+                    prices: {
+                        "8x10": "25.00",
+                        "11x14": "45.00",
+                        "16x20": "75.00"
+                    }
+                },
+                {
+                    id: "torii",
+                    title: "TORII",
+                    image: "images/prints/torii.jpeg",
+                    description: "The floating Great Torii Gate of Itsukushima Shrine, standing in deep blue water against a massive, cloud-shrouded green mountain peak.",
+                    prices: {
+                        "8x10": "25.00",
+                        "11x14": "45.00",
+                        "16x20": "75.00"
+                    }
+                },
+                {
+                    id: "koi",
+                    title: "KOI",
+                    image: "images/prints/koi.jpeg",
+                    description: "A stunning, high-contrast shot of an orange-and-white Koi fish swimming in dark waters, creating a series of concentric circular ripples.",
+                    prices: {
+                        "8x10": "25.00",
+                        "11x14": "45.00",
+                        "16x20": "75.00"
+                    }
+                },
+                {
+                    id: "copper",
+                    title: "COPPER",
+                    image: "images/prints/copper.jpeg",
+                    description: "A warm, twilight view of the historic green copper flatiron Sentinel Building in San Francisco, illuminated against tall skyscrapers.",
+                    prices: {
+                        "8x10": "25.00",
+                        "11x14": "45.00",
+                        "16x20": "75.00"
+                    }
+                },
+                {
+                    id: "passage",
+                    title: "PASSAGE",
+                    image: "images/prints/passage.jpeg",
+                    description: "A deeply cinematic perspective down a dark hotel corridor, capturing light glowing from doorways and a central vanishing point.",
+                    prices: {
+                        "8x10": "25.00",
+                        "11x14": "45.00",
+                        "16x20": "75.00"
+                    }
+                }
+            ];
+
+            // Generate 3x2 Grid of Prints
+            const generateGrid = () => {
+                const grid = document.getElementById('prints-grid');
+                grid.innerHTML = '';
+                
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'print-card';
+                    card.setAttribute('data-id', product.id);
+                    
+                    card.innerHTML = `
+                        <div class="print-image-wrapper">
+                            <img src="${product.image}" alt="${product.title}" loading="lazy">
+                        </div>
+                        <div class="print-card-info">
+                            <h3>${product.title}</h3>
+                            <p class="print-card-price">From $${product.prices['8x10']}</p>
+                        </div>
+                    `;
+                    
+                    card.addEventListener('click', () => {
+                        window.location.hash = product.id;
+                    });
+                    
+                    grid.appendChild(card);
+                });
+            };
+
+            // Global reference to the current visible product
+            let currentProduct = null;
+
+            // Render/Update PayPal buttons
+            const renderPayPalButtons = (price, size, product) => {
+                const container = document.getElementById('paypal-button-container');
+                container.innerHTML = ''; // Clear existing button before rendering new one
+                
+                if (typeof paypal === 'undefined') {
+                    container.innerHTML = '<p class="error-message">PayPal payment portal is currently unavailable. Please check your internet connection.</p>';
+                    return;
+                }
+
+                paypal.Buttons({
+                    style: {
+                        layout: 'vertical',
+                        color: 'white',   // Fits beautifully with the dark editorial aesthetic
+                        shape: 'rect',    // Hard/clean edges matching overall site design
+                        label: 'paypal'
+                    },
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    currency_code: 'USD',
+                                    value: price
+                                },
+                                description: `Fine Art Print: ${product.title} - Size: ${size}`
+                            }]
+                        });
+                    },
+                    onApprove: (data, actions) => {
+                        return actions.order.capture().then(details => {
+                            container.innerHTML = `
+                                <div class="checkout-success" style="padding: 1.5rem; border: 1px solid var(--border-color); background-color: #0c0c0c; margin-top: 1rem; text-align: center;">
+                                    <h3 style="font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; color: var(--accent-color);">Order Confirmed</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-color); margin-bottom: 0.5rem;">Thank you for your purchase, ${details.payer.name.given_name}!</p>
+                                    <p style="font-size: 0.75rem; color: var(--text-muted);">A confirmation and tracking link has been sent to ${details.payer.email_address}.</p>
+                                </div>
+                            `;
+                        });
+                    },
+                    onError: err => {
+                        console.error('PayPal checkout error:', err);
+                        const errEl = document.createElement('p');
+                        errEl.className = 'error-message';
+                        errEl.style.fontSize = '0.8rem';
+                        errEl.style.color = '#ff4444';
+                        errEl.style.marginTop = '1rem';
+                        errEl.innerText = 'Could not initialize payment. Please try again or refresh the page.';
+                        container.appendChild(errEl);
+                    }
+                }).render('#paypal-button-container');
+            };
+
+            // Router: Handles views based on URL hash
+            const router = () => {
+                const hash = window.location.hash.slice(1).toLowerCase();
+                const gridView = document.getElementById('prints-grid-view');
+                const detailView = document.getElementById('product-detail-view');
+                
+                const product = products.find(p => p.id === hash);
+                
+                if (product) {
+                    currentProduct = product;
+                    gridView.style.display = 'none';
+                    detailView.style.display = 'block';
+                    
+                    // Scroll to top instantly
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                    
+                    // Populate details
+                    const imgEl = document.getElementById('detail-image');
+                    imgEl.src = product.image;
+                    imgEl.alt = product.title;
+                    
+                    document.getElementById('detail-title').innerText = product.title;
+                    document.getElementById('detail-description').innerText = product.description;
+                    
+                    // Reset dropdown to default size
+                    const sizeSelect = document.getElementById('detail-size-select');
+                    sizeSelect.value = '8x10';
+                    
+                    const defaultPrice = product.prices['8x10'];
+                    document.getElementById('detail-price').innerText = `$${defaultPrice} USD`;
+                    
+                    // Initialize PayPal buttons for the default size
+                    renderPayPalButtons(defaultPrice, '8x10', product);
+                } else {
+                    currentProduct = null;
+                    detailView.style.display = 'none';
+                    gridView.style.display = 'block';
+                    
+                    // Clean up URL if invalid hash was entered
+                    if (hash && hash !== 'prints') {
+                        window.location.hash = '';
+                    }
+                }
+            };
+
+            // Size Selection Change Handler
+            document.getElementById('detail-size-select').addEventListener('change', (e) => {
+                if (!currentProduct) return;
+                
+                const selectedSize = e.target.value;
+                const newPrice = currentProduct.prices[selectedSize];
+                
+                // Update pricing display
+                document.getElementById('detail-price').innerText = `$${newPrice} USD`;
+                
+                // Reinitialize PayPal buttons with new pricing and size label
+                renderPayPalButtons(newPrice, selectedSize, currentProduct);
+            });
+
+            // Initialize Grid and Router
+            generateGrid();
+            router();
+            
+            // Listen for Hash Changes (for forward/back navigation support)
+            window.addEventListener('hashchange', router);
+        });
+    </script>
+</body>
+</html>
