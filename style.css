@@ -1,0 +1,578 @@
+/* CSS Reset & Variable Declarations */
+:root {
+    --bg-color: #000000;              /* Pitch black background */
+    --text-color: #f5f5f5;            /* Crisp off-white */
+    --text-muted: #777777;            /* Medium gray for subtle secondary text */
+    --accent-color: #ffffff;          /* Pure white for title & hover accent */
+    --border-color: #1a1a1a;          /* Dark gray border for separators */
+    --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --max-width: 1400px;              /* Slightly wider content width to give masonry space */
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 3rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-stack);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header Section (Flex Row on Desktop for Horizontal Side-by-Side Alignment) */
+.site-header {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;   /* Title on left, Nav links on right */
+    align-items: baseline;            /* Aligns bases of letters perfectly on the same plane */
+}
+
+.site-title {
+    font-size: 2.2rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;           /* Elegant extra-spaced lettering */
+    text-transform: uppercase;
+}
+
+.site-title a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.site-title a:hover {
+    opacity: 0.7;
+}
+
+/* Navigation Menu */
+.site-nav {
+    margin-top: 0;
+    padding-bottom: 0;
+}
+
+.site-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;        /* Right aligned on the same plane */
+    gap: 2.5rem;                      /* Clean spacing between tabs */
+}
+
+.site-nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    transition: color 0.3s ease;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+    color: var(--accent-color);
+}
+
+/* Main Content & Gallery Grid (Modern CSS Grid + Flex Columns Masonry) */
+.gallery-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md) var(--spacing-lg);
+}
+
+/* 
+   By using a standard CSS Grid container with align-items: start,
+   the browser is mathematically forced to align the top edge of all three
+   column containers perfectly flat at the exact same horizontal coordinate.
+   This is immune to browser-specific multi-column bugs, baseline alignment, or margin-collapsing.
+*/
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
+    column-gap: 0.5rem;                    /* Exact horizontal spacing between columns */
+    align-items: start;                    /* Crucial: guarantees the top of all 3 columns align 100% flush! */
+    width: 100%;
+}
+
+/* Each column is a vertical Flexbox stack for individual photos */
+.gallery-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;                           /* Exact vertical spacing between photos */
+    width: 100%;
+}
+
+/* Gallery Item Styling */
+.gallery-item {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #0c0c0c;       /* Ultra dark backup color for image loading */
+    border-radius: 0;                /* Clean hard edges for high-end editorial feel */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;                     /* Natural vertical height (no cropping!) */
+    display: block;
+    cursor: pointer;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Elegant image zoom on hover */
+.gallery-item:hover img {
+    transform: scale(1.03);
+}
+
+/* About Page Specific Styles */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;  /* Two equal columns on desktop */
+    gap: 5rem;                       /* Generous spacing between image and content */
+    align-items: start;
+    margin-top: 1rem;
+}
+
+.about-image {
+    width: 100%;
+    overflow: hidden;
+    background-color: #0c0c0c;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+}
+
+.about-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.contact-info {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.contact-info h2 {
+    font-size: 1.8rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+}
+
+.contact-info p {
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.contact-info a {
+    color: var(--text-color);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-color);
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+/* Signal QR Code Card Frame Styles */
+.signal-qr {
+    width: 100%;
+    max-width: 380px;                /* Sized beautifully for a premium look */
+    overflow: hidden;
+    background-color: #0c0c0c;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+    border-radius: 0;                /* Hard clean edges matching the portfolio aesthetic */
+}
+
+.signal-qr img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* --- Series Grid Layout --- */
+.series-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Clean 3 column layout */
+    gap: 1.5rem;                           /* Editorial spacious gap */
+    width: 100%;
+}
+
+.series-item {
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+.series-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 2;                  /* Consistent cover image proportions */
+    overflow: hidden;
+    background-color: #0c0c0c;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+}
+
+.series-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.series-item:hover .series-cover img {
+    transform: scale(1.04);
+}
+
+/* Subtle editorial caption under each cover image */
+.series-title-overlay {
+    margin-top: 0.75rem;
+    text-align: left;
+}
+
+.series-title-overlay h3 {
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.series-item:hover .series-title-overlay h3 {
+    color: var(--accent-color);
+}
+
+/* Non-interactive grid placeholders to preserve the 3-column top-left structure */
+.series-placeholder {
+    width: 100%;
+}
+
+/* --- Horizontal Slideshow Lightbox Overlay --- */
+.slideshow-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;         /* Deep pure dark */
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slideshow-lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.slideshow-close-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: zoom-out;
+}
+
+.slideshow-close-btn {
+    position: absolute;
+    top: 2rem;
+    right: 2.5rem;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 2.5rem;
+    font-weight: 100;
+    cursor: pointer;
+    opacity: 0.5;
+    z-index: 2003;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.slideshow-close-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Slideshow navigation arrow buttons */
+.slideshow-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 4rem;
+    font-weight: 100;
+    cursor: pointer;
+    opacity: 0.3;
+    z-index: 2003;
+    transition: opacity 0.2s, transform 0.2s;
+    padding: 2rem;
+    user-select: none;
+    outline: none;
+}
+
+.slideshow-nav-btn:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.05);
+}
+
+.slideshow-prev-btn {
+    left: 1.5rem;
+}
+
+.slideshow-next-btn {
+    right: 1.5rem;
+}
+
+/* Info and progress counter panel at the bottom center */
+.slideshow-info-panel {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 2003;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.slideshow-series-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+}
+
+.slideshow-counter {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+}
+
+.slideshow-content {
+    position: relative;
+    width: 80vw;
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2002;
+}
+
+.slideshow-content img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.95);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Smooth opacity slide-scale transition for horizontal flips */
+.slideshow-content img.fade-out {
+    opacity: 0;
+    transform: scale(0.98);
+}
+
+/* Lightbox Modal Overlay (Single view for Homepage) */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.98); /* Pure deep black overlay */
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-close-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: zoom-out;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 85vh;
+    z-index: 1001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-content img {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.95);
+}
+
+.lightbox-close-btn {
+    position: absolute;
+    top: 2rem;
+    right: 2.5rem;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 2.5rem;
+    font-weight: 100;
+    cursor: pointer;
+    opacity: 0.5;
+    z-index: 1002;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.lightbox-close-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Footer Section */
+.site-footer {
+    max-width: var(--max-width);
+    margin: var(--spacing-lg) auto 0;
+    padding: var(--spacing-lg) var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    text-align: center;              /* Centered footer as requested */
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.footer-credit {
+    margin-top: 0.5rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 1024px) {
+    /* Maintain 3-column layout on tablets, scaling columns slightly */
+    .gallery-grid {
+        column-gap: 0.5rem;
+    }
+    
+    .about-grid {
+        gap: 3rem;                   /* Slightly tighter column gap on tablets */
+    }
+
+    .series-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --spacing-lg: 2.5rem;
+        --spacing-md: 1.25rem;
+    }
+    
+    /* On mobile, stack header elements vertically and align left */
+    .site-header {
+        padding-top: var(--spacing-lg);
+        flex-direction: column;       /* Stack vertically */
+        align-items: flex-start;      /* Align flush left */
+        gap: 1rem;
+    }
+    
+    .site-title {
+        font-size: 1.8rem;
+    }
+    
+    .site-nav ul {
+        justify-content: flex-start;  /* Align links to the left on mobile */
+        gap: 2rem;
+    }
+    
+    /* On mobile, stack columns into a beautiful single vertical stream */
+    .gallery-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;  /* Stack columns on mobile */
+        gap: 3rem;
+    }
+
+    .series-grid {
+        grid-template-columns: 1fr;  /* Stack series on mobile */
+        gap: 1.5rem;
+    }
+
+    .slideshow-nav-btn {
+        font-size: 3rem;
+        padding: 1rem;
+    }
+
+    .slideshow-prev-btn {
+        left: 0.5rem;
+    }
+
+    .slideshow-next-btn {
+        right: 0.5rem;
+    }
+
+    .lightbox-close-btn {
+        top: 1.5rem;
+        right: 1.5rem;
+        font-size: 2rem;
+    }
+}

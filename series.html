@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series &mdash; TJ Jiang</title>
+    <link rel="stylesheet" href="style.css?v=2.0">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="site-header">
+        <h1 class="site-title"><a href="index.html">TJ Jiang</a></h1>
+        <nav class="site-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="series.html" class="active">Series</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content (Series Page Grid) -->
+    <main class="gallery-container">
+        <section class="series-grid">
+            
+            <!-- Series Item 1 (Reflections) - Stays at top left grid -->
+            <div class="series-item" data-images="images/series/reflections/DSCF2569.jpeg,images/series/reflections/DSCF5268.jpeg,images/series/reflections/IMG_9670.jpeg,images/series/reflections/NO_FUSION_0521_056.jpeg,images/series/reflections/NO_FUSION_0529_062.jpeg" data-title="Reflections">
+                <div class="series-cover">
+                    <img src="images/series/reflections/DSCF2569.jpeg" alt="Reflections Series Cover">
+                </div>
+                <div class="series-title-overlay">
+                    <h3>Reflections</h3>
+                </div>
+            </div>
+
+            <!-- Empty Grid Cells to maintain the 3-column structure with Reflections at top left -->
+            <div class="series-placeholder"></div>
+            <div class="series-placeholder"></div>
+
+        </section>
+    </main>
+
+    <!-- Horizontal Slideshow Lightbox Overlay -->
+    <div id="slideshow-lightbox" class="slideshow-lightbox" aria-hidden="true" role="dialog">
+        <div class="slideshow-close-area"></div>
+        
+        <!-- Next/Previous Buttons -->
+        <button class="slideshow-nav-btn slideshow-prev-btn" aria-label="Previous image">&lsaquo;</button>
+        <button class="slideshow-nav-btn slideshow-next-btn" aria-label="Next image">&rsaquo;</button>
+        
+        <!-- Close Button -->
+        <button class="slideshow-close-btn" aria-label="Close Lightbox">&times;</button>
+        
+        <!-- Main Content Area -->
+        <div class="slideshow-content">
+            <img id="slideshow-img" src="" alt="Series View">
+        </div>
+        
+        <!-- Metadata/Info Panel -->
+        <div class="slideshow-info-panel">
+            <div id="slideshow-title" class="slideshow-series-title"></div>
+            <div id="slideshow-counter" class="slideshow-counter"></div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <p>&copy; 2026 TJ Jiang</p>
+    </footer>
+
+    <!-- Native Responsive Horizontal Slideshow JS Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slideshow = document.getElementById('slideshow-lightbox');
+            const slideshowImg = document.getElementById('slideshow-img');
+            const slideshowTitle = document.getElementById('slideshow-title');
+            const slideshowCounter = document.getElementById('slideshow-counter');
+            
+            const prevBtn = document.querySelector('.slideshow-prev-btn');
+            const nextBtn = document.querySelector('.slideshow-next-btn');
+            const closeBtn = document.querySelector('.slideshow-close-btn');
+            const closeArea = document.querySelector('.slideshow-close-area');
+
+            let currentImages = [];
+            let currentIndex = 0;
+            let currentTitle = '';
+
+            // Swipe gestures variables
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            const openSlideshow = (imagesArray, index, title) => {
+                currentImages = imagesArray;
+                currentIndex = index;
+                currentTitle = title;
+
+                updateImage(true); // Direct load, no fade animation on initial open
+                
+                slideshow.classList.add('active');
+                slideshow.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeSlideshow = () => {
+                slideshow.classList.remove('active');
+                slideshow.setAttribute('aria-hidden', 'true');
+                setTimeout(() => {
+                    slideshowImg.src = ''; // Flush image src to prevent flashing
+                }, 400);
+                document.body.style.overflow = '';
+            };
+
+            const updateImage = (immediate = false) => {
+                const newSrc = currentImages[currentIndex];
+                
+                if (immediate) {
+                    slideshowImg.src = newSrc;
+                    slideshowCounter.innerText = `${currentIndex + 1} of ${currentImages.length}`;
+                    slideshowTitle.innerText = currentTitle;
+                } else {
+                    slideshowImg.classList.add('fade-out');
+                    setTimeout(() => {
+                        slideshowImg.src = newSrc;
+                        slideshowCounter.innerText = `${currentIndex + 1} of ${currentImages.length}`;
+                        slideshowTitle.innerText = currentTitle;
+                        slideshowImg.onload = () => {
+                            slideshowImg.classList.remove('fade-out');
+                        };
+                    }, 150); // Match CSS fade duration
+                }
+            };
+
+            const nextSlide = () => {
+                if (currentImages.length <= 1) return;
+                currentIndex = (currentIndex + 1) % currentImages.length;
+                updateImage();
+            };
+
+            const prevSlide = () => {
+                if (currentImages.length <= 1) return;
+                currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+                updateImage();
+            };
+
+            // Setup click listeners on all series cover elements
+            const seriesItems = document.querySelectorAll('.series-item');
+            seriesItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const imagesStr = item.getAttribute('data-images');
+                    const title = item.getAttribute('data-title');
+                    if (imagesStr) {
+                        const imagesArray = imagesStr.split(',');
+                        openSlideshow(imagesArray, 0, title);
+                    }
+                });
+            });
+
+            // Button controls
+            prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevSlide(); });
+            nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextSlide(); });
+            closeBtn.addEventListener('click', closeSlideshow);
+            closeArea.addEventListener('click', closeSlideshow);
+
+            // Close when clicking backdrop directly
+            slideshow.addEventListener('click', (e) => {
+                if (e.target === slideshow) closeSlideshow();
+            });
+
+            // Keyboard navigation (Arrow keys and Escape)
+            document.addEventListener('keydown', (e) => {
+                if (!slideshow.classList.contains('active')) return;
+                if (e.key === 'Escape') closeSlideshow();
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            });
+
+            // Mobile Horizontal Touch Swipe Gestures
+            slideshow.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            slideshow.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+
+            const handleSwipe = () => {
+                const threshold = 50; // minimum horizontal swipe distance in pixels
+                if (touchStartX - touchEndX > threshold) {
+                    nextSlide(); // Swipe Left -> Show Next Slide
+                } else if (touchEndX - touchStartX > threshold) {
+                    prevSlide(); // Swipe Right -> Show Previous Slide
+                }
+            };
+        });
+    </script>
+</body>
+</html>

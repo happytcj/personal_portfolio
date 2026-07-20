@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TJ Jiang &mdash; Photography Portfolio</title>
+    <link rel="stylesheet" href="style.css?v=2.0">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="site-header">
+        <h1 class="site-title"><a href="index.html">TJ Jiang</a></h1>
+        <nav class="site-nav">
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="series.html">Series</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content (Gallery) -->
+    <main class="gallery-container">
+        <section class="gallery-grid">
+            
+            <!-- Column 1 -->
+            <div class="gallery-column">
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/DSCF1286.jpeg" alt="DSCF1286" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/NO_FUSION_0529_062.jpeg" alt="NO_FUSION_0529_062" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/DSCF2103.jpeg" alt="DSCF2103" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/DSCF4704.jpeg" alt="DSCF4704" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/DSCF5292.jpeg" alt="DSCF5292" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/NO_FUSION_0220_016.jpeg" alt="NO_FUSION_0220_016" loading="lazy">
+                    </div>
+                </figure>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="gallery-column">
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/DSCF1391.jpeg" alt="DSCF1391" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/DSCF2643.jpeg" alt="DSCF2643" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/DSCF5268.jpeg" alt="DSCF5268" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/NO_FUSION_0207_027.jpeg" alt="NO_FUSION_0207_027" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/NO_FUSION_0514_020.jpeg" alt="NO_FUSION_0514_020" loading="lazy">
+                    </div>
+                </figure>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="gallery-column">
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/DSCF2035.jpeg" alt="DSCF2035" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/NO_FUSION_0529_069.jpeg" alt="NO_FUSION_0529_069" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/DSCF4373.jpeg" alt="DSCF4373" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/IMG_3224.jpeg" alt="IMG_3224" loading="lazy">
+                    </div>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="image-wrapper">
+                        <img src="images/homepage/NO_FUSION_0423_018.jpeg" alt="NO_FUSION_0423_018" loading="lazy">
+                    </div>
+                </figure>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Lightbox Modal Overlay -->
+    <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog">
+        <div class="lightbox-close-area"></div>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Full size image view">
+        </div>
+        <button class="lightbox-close-btn" aria-label="Close Lightbox">&times;</button>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <p>&copy; 2026 TJ Jiang</p>
+    </footer>
+
+    <!-- Native Lightweight Lightbox Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const galleryImages = document.querySelectorAll('.gallery-item img');
+            const closeBtn = document.querySelector('.lightbox-close-btn');
+            const closeArea = document.querySelector('.lightbox-close-area');
+
+            // Open Lightbox
+            galleryImages.forEach(img => {
+                img.addEventListener('click', (e) => {
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+                    lightbox.classList.add('active');
+                    lightbox.setAttribute('aria-hidden', 'false');
+                    document.body.style.overflow = 'hidden'; // Lock body scroll
+                });
+            });
+
+            // Close Lightbox function
+            const closeLightbox = () => {
+                lightbox.classList.remove('active');
+                lightbox.setAttribute('aria-hidden', 'true');
+                lightboxImg.src = ''; // Flush image source to prevent visual flash next time
+                document.body.style.overflow = ''; // Restore body scroll
+            };
+
+            // Close events
+            closeBtn.addEventListener('click', closeLightbox);
+            closeArea.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            // Keydown event (Escape key)
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
